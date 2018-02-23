@@ -1,0 +1,5 @@
+*.log
+*.html
+*.out
+vendor/
+.cover/
