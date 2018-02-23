@@ -1,0 +1,17 @@
+sudo: required
+
+language: go
+
+go:
+- 1.9
+
+install:
+- make install_ci
+
+script:
+- make
+
+# if repo is public, uncomment to report coverage metrics
+# after_success:
+# - make cover_ci
+# - travis_retry goveralls -coverprofile=cover.out -service=travis-ci || true

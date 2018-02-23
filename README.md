@@ -1,11 +1,13 @@
 # fetakv
 
+[![Build Status](https://travis-ci.com/frankgreco/fetakv.svg?token=MkdavBWRqQGB4gWqK2cR&branch=master)](https://travis-ci.com/frankgreco/fetakv)
+
 > a command line REPL that drives a thread safe, in-memory kv storage system
 
 ## Quick Start
 ```sh
-$ mkdir -p $GOPATH/src/frankgreco
-$ cd $GOPATH/src/frankgreco
+$ mkdir -p $GOPATH/src/github.com/frankgreco
+$ cd $GOPATH/src/github.com/frankgreco
 $ git clone git@github.com:frankgreco/fetakv.git
 $ cd fetakv
 $ make binary

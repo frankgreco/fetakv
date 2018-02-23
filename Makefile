@@ -15,7 +15,7 @@ COLORIZE	=	sed ''/PASS/s//$(PASS)/'' | sed ''/FAIL/s//$(FAIL)/''
 
 .DEFAULT_GOAL: $(BINARY)
 
-$(BINARY): $(ALL_SRC) fmt lint test
+$(BINARY): $(ALL_SRC) install_ci fmt lint test
 
 .PHONY: unit_test
 unit_test:
@@ -30,7 +30,7 @@ test: unit_test integration_test
 
 .PHONY: install
 install:
-	(dep version | grep v0.4.1) || (wget -q https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 && chmod +x dep-linux-amd64 && mv dep-linux-amd64 /usr/local/bin/dep && dep version)
+	(dep version | grep v0.4.1) || (mkdir -p $(GOPATH)/bin && DEP_RELEASE_TAG=v0.4.1 curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh)
 	dep ensure -v -vendor-only # assumes updated Gopkg.lock
 
 .PHONY: fmt
@@ -41,6 +41,10 @@ fmt:
 cover:
 	@./hack/cover.sh $(shell go list $(PACKAGES))
 	@go tool cover -html=cover.out -o cover.html
+
+.PHONY: cover_ci
+cover_ci:
+	@./hack/cover.sh $(PACKAGES)
 
 .PHONY: binary
 binary:
@@ -58,8 +62,8 @@ lint:
 
 .PHONY: install_ci
 install_ci: install
-	go get github.com/wadey/gocovmerge
-	go get github.com/mattn/goveralls
-	go get golang.org/x/tools/cmd/cover
-	go get github.com/golang/lint/golint
-	go get github.com/kisielk/errcheck
+	go get -u github.com/wadey/gocovmerge
+	go get -u github.com/mattn/goveralls
+	go get -u golang.org/x/tools/cmd/cover
+	go get -u golang.org/x/lint/golint
+	go get -u github.com/kisielk/errcheck
