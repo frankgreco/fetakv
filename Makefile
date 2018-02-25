@@ -30,7 +30,7 @@ test: unit_test integration_test
 
 .PHONY: install
 install:
-	(dep version | grep v0.4.1) || (mkdir -p $(GOPATH)/bin && DEP_RELEASE_TAG=v0.4.1 curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh)
+	(dep version | grep v0.4.1) || (mkdir -p $(GOPATH)/bin && DEP_RELEASE_TAG=v0.4.1 curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh && dep version)
 	dep ensure -v -vendor-only # assumes updated Gopkg.lock
 
 .PHONY: fmt

@@ -3,7 +3,6 @@ package commands
 import (
 	"errors"
 	"fmt"
-	"io"
 	"strings"
 )
 
@@ -12,9 +11,18 @@ type Commands []Command
 
 // Command provides an interface for a command
 type Command interface {
+	// Token returns token corresponding to this command.
 	Token() string
-	Do(stdout, stderr io.Writer, args []string) error
+	// Do preforms any logic associated with this command.
+	// If this logic results in information that should be
+	// relayed to stdout or stderr, it is returned.
+	Do(args []string) (stdout, stderr string)
+	// IsTerminal relays whether this program should exit
+	// after the exectution of Do.
+	IsTerminal() bool
 }
+
+var noOutput string // note that zero value is "" which is what we would've set it too
 
 // Register will register a list of commands as valid.
 func Register(commands ...Command) *Commands {
@@ -33,6 +41,6 @@ func (cmds *Commands) Parse(data string) (Command, error) {
 			return cmd, nil
 		}
 	}
-	msg := fmt.Sprintf("Command not found: %s\n", data) // bypass golint
+	msg := fmt.Sprintf("Command not found: %s", data) // bypass golint
 	return nil, errors.New(msg)
 }

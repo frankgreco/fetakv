@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"io"
 
 	"github.com/frankgreco/fetakv/pkg/stack"
 )
@@ -14,22 +13,23 @@ type Delete struct {
 }
 
 // Do implements Command
-func (cmd *Delete) Do(stdout, stderr io.Writer, args []string) error {
+func (cmd *Delete) Do(args []string) (stdout, stderr string) {
 	if args == nil || len(args) != 1 {
-		_, err := stderr.Write([]byte(
-			fmt.Sprintf("%s requires 1 arguments. Type HELP for more information.", cmd.Token()),
-		))
-		return err
+		return noOutput, fmt.Sprintf("%s requires 1 arguments. Type HELP for more information.", cmd.Token())
 	}
 
 	if err := cmd.Stack.Peek().Store().Delete(args[0]); err != nil {
-		_, err := stderr.Write([]byte(err.Error() + "\n"))
-		return err
+		return noOutput, err.Error()
 	}
-	return nil
+	return noOutput, noOutput
 }
 
 // Token implements Command
 func (cmd *Delete) Token() string {
 	return "DELETE"
+}
+
+// IsTerminal implements Command
+func (cmd *Delete) IsTerminal() bool {
+	return false
 }

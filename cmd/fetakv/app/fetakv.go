@@ -6,13 +6,13 @@ import (
 	"strings"
 
 	"github.com/frankgreco/fetakv/pkg/commands"
+	"github.com/frankgreco/fetakv/pkg/prompt"
 	"github.com/frankgreco/fetakv/pkg/stack"
 	"github.com/frankgreco/fetakv/pkg/transaction"
-	"github.com/frankgreco/fetakv/pkg/utils"
 )
 
 // Run fascilites this program
-func Run(stdin io.Reader, stdout, stderr io.Writer, prompt utils.Prompt) error {
+func Run(stdin io.Reader, stdout, stderr io.Writer, p prompt.Prompt) error {
 	s := stack.New()
 	s.Push(transaction.New())
 
@@ -31,7 +31,7 @@ func Run(stdin io.Reader, stdout, stderr io.Writer, prompt utils.Prompt) error {
 	scanner.Split(bufio.ScanLines)
 
 	for {
-		if _, err := stdout.Write([]byte(prompt)); err != nil {
+		if err := write(p.String(), stdout); err != nil {
 			return err
 		}
 		if !scanner.Scan() {
@@ -44,15 +44,34 @@ func Run(stdin io.Reader, stdout, stderr io.Writer, prompt utils.Prompt) error {
 
 		cmd, err := registeredCommands.Parse(args[0])
 		if err != nil {
-			if _, err := stderr.Write([]byte(err.Error())); err != nil {
+			if err := write(normalize(err.Error()), stderr); err != nil {
 				return err
 			}
 			continue
 		}
-		if err := cmd.Do(stdout, stderr, args[1:]); err != nil {
+		stdoutText, stderrText := cmd.Do(args[1:])
+		if err := write(normalize(stdoutText), stdout); err != nil {
 			return err
+		}
+		if err := write(normalize(stderrText), stderr); err != nil {
+			return err
+		}
+		if cmd.IsTerminal() {
+			return nil
 		}
 	}
 
 	return scanner.Err()
+}
+
+func write(data string, writer io.Writer) error {
+	_, err := writer.Write([]byte(data))
+	return err
+}
+
+func normalize(data string) string {
+	if len(data) < 1 {
+		return data
+	}
+	return data + "\n"
 }

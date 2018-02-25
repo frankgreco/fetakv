@@ -1,4 +1,4 @@
-package utils
+package prompt
 
 // Prompt represents different types of prompts
 type Prompt string
@@ -9,3 +9,8 @@ const (
 	// PromptNone is a test friendly prompt
 	PromptNone Prompt = ""
 )
+
+// String implements the Stringer interface.
+func (p Prompt) String() string {
+	return string(p)
+}

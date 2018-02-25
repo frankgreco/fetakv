@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"io"
-
 	"github.com/frankgreco/fetakv/pkg/stack"
 )
 
@@ -13,18 +11,22 @@ type Commit struct {
 }
 
 // Do implements Command
-func (cmd *Commit) Do(stdout, stderr io.Writer, args []string) error {
+func (cmd *Commit) Do(args []string) (stdout, stderr string) {
 	if cmd.Stack.Size() > 1 {
 		curr := cmd.Stack.Pop()
 		cmd.Stack.Peek().Store().AddAll(curr.Store())
-		return nil
+		return noOutput, noOutput
 	}
 
-	_, err := stderr.Write([]byte("There are no current transactions to commit.\n"))
-	return err
+	return noOutput, "There are no current transactions to commit."
 }
 
 // Token implements Command
 func (cmd *Commit) Token() string {
 	return "COMMIT"
+}
+
+// IsTerminal implements Command
+func (cmd *Commit) IsTerminal() bool {
+	return false
 }

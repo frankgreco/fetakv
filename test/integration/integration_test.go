@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/frankgreco/fetakv/cmd/fetakv/app"
-	"github.com/frankgreco/fetakv/pkg/utils"
+	"github.com/frankgreco/fetakv/pkg/prompt"
 )
 
 func TestIntegration(t *testing.T) {
@@ -35,7 +35,7 @@ func TestIntegration(t *testing.T) {
 		stderr := new(bytes.Buffer)
 		stdoutWriter := bufio.NewWriter(stdout)
 		stderrWriter := bufio.NewWriter(stderr)
-		err := app.Run(bytes.NewReader(test.stdin), stdoutWriter, stderrWriter, utils.PromptNone)
+		err := app.Run(bytes.NewReader(test.stdin), stdoutWriter, stderrWriter, prompt.PromptNone)
 		stdoutWriter.Flush()
 		stderrWriter.Flush()
 

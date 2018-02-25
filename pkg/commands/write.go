@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"io"
 
 	"github.com/frankgreco/fetakv/pkg/stack"
 )
@@ -14,19 +13,21 @@ type Write struct {
 }
 
 // Do implements Command
-func (cmd *Write) Do(stdout, stderr io.Writer, args []string) error {
+func (cmd *Write) Do(args []string) (stdout, stderr string) {
 	if args == nil || len(args) != 2 {
-		_, err := stderr.Write([]byte(
-			fmt.Sprintf("%s requires 2 arguments. Type HELP for more information.", cmd.Token()),
-		))
-		return err
+		return noOutput, fmt.Sprintf("%s requires 2 arguments. Type HELP for more information.", cmd.Token())
 	}
 
 	cmd.Stack.Peek().Store().Write(args[0], args[1])
-	return nil
+	return noOutput, noOutput
 }
 
 // Token implements Command
 func (cmd *Write) Token() string {
 	return "WRITE"
+}
+
+// IsTerminal implements Command
+func (cmd *Write) IsTerminal() bool {
+	return false
 }

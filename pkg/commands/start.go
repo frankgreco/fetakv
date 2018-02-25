@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"io"
-
 	"github.com/frankgreco/fetakv/pkg/stack"
 	"github.com/frankgreco/fetakv/pkg/transaction"
 )
@@ -14,12 +12,17 @@ type Start struct {
 }
 
 // Do implements Command
-func (cmd *Start) Do(stdout, stderr io.Writer, args []string) error {
+func (cmd *Start) Do(args []string) (stdout, stderr string) {
 	cmd.Stack.Push(transaction.New())
-	return nil
+	return noOutput, noOutput
 }
 
 // Token implements Command
 func (cmd *Start) Token() string {
 	return "START"
+}
+
+// IsTerminal implements Command
+func (cmd *Start) IsTerminal() bool {
+	return false
 }

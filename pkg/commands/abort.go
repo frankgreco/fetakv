@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"io"
-
 	"github.com/frankgreco/fetakv/pkg/stack"
 )
 
@@ -13,16 +11,21 @@ type Abort struct {
 }
 
 // Do implements Command
-func (cmd *Abort) Do(stdout, stderr io.Writer, args []string) error {
+func (cmd *Abort) Do(args []string) (stdout, stderr string) {
 	if cmd.Stack.Size() > 1 {
 		cmd.Stack.Pop()
-		return nil
+		return noOutput, noOutput
 	}
-	_, err := stderr.Write([]byte("There are no current transactions to abort.\n"))
-	return err
+
+	return noOutput, "There are no current transactions to abort."
 }
 
 // Token implements Command
 func (cmd *Abort) Token() string {
 	return "ABORT"
+}
+
+// IsTerminal implements Command
+func (cmd *Abort) IsTerminal() bool {
+	return false
 }
