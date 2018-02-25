@@ -15,6 +15,17 @@ $ fetakv
 >
 ```
 
+## Development Guide
+`featkv` uses [`dep`](https://github.com/golang/dep) for dependencies.
+
+```sh
+$ mkdir -p $GOPATH/src/github.com/frankgreco
+$ cd $GOPATH/src/github.com/frankgreco
+$ git clone git@github.com:frankgreco/fetakv.git
+$ cd fetakv
+$ make # format, lint, and test everything
+```
+
 ## Usage
 ```sh
 $ fetakv
@@ -31,17 +42,4 @@ Available Commands:
   ABORT               Aborts a transation.
   QUIT                Exit fetakv.
 >
-```
-
-## Testing
-`featkv` uses [`dep`](https://github.com/golang/dep) for dependencies.
-```sh
-$ cd $GOPATH/src/frankgreco/fetakv
-$ make install_ci       # install all dependencies for testing
-$ make                  # format, lint, and test everything
-$ make fmt              # format all files
-$ make lint             # lint all files
-$ make unit_test        # only unit tests
-$ make integration_test # only integration tests
-$ make test             # all tests
 ```
