@@ -15,6 +15,24 @@ $ fetakv
 >
 ```
 
+## Advanced Usage
+
+It may be useful to process transactions in bulk. To do this, simply set the `--stdin` flag to the location of your transactions.
+
+Below is an example taken from this project's integration tests. Note that both the `stdout` and `stderr` file descriptors have been redirected to simulate a real world use case.
+
+```sh
+$ fetakv --stdin examples/stdin.txt 1>>examples/stdout.txt 2>>examples/stderr.txt
+$ cat examples/stdout.txt
+bar
+one
+...
+$ cat examples/stderr.txt
+There are no current transactions to abort.
+Key not found: foo
+...
+```
+
 ## Development Guide
 `featkv` uses [`dep`](https://github.com/golang/dep) for dependencies.
 

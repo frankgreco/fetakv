@@ -1,0 +1,46 @@
+ABORT
+reAD foo
+WRITE foo bar
+READ foo
+DELETE foo
+read foo
+COMMIT
+STart
+ABORT
+start
+COMMIT
+START
+START
+ABORT
+COMMIT
+ABORT
+COMMIT
+START
+WRITE one one
+READ one
+ABORT
+READ one
+FOO
+START
+WRITE one two
+READ one
+commit
+READ one
+ABORT
+start
+START
+WRITE one THREE
+COMMIT
+read one
+ABORT
+READ one
+START
+write one four
+READ one
+START
+WRITE one five
+COMMIT
+READ one
+COMMIT
+read one
+COMMIT

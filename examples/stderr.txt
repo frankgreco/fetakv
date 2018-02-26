@@ -1,0 +1,10 @@
+There are no current transactions to abort.
+Key not found: foo
+Key not found: foo
+There are no current transactions to commit.
+There are no current transactions to abort.
+There are no current transactions to commit.
+Key not found: one
+Command not found: FOO
+There are no current transactions to abort.
+There are no current transactions to commit.
